@@ -16,26 +16,34 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _list() {
-    print(menuProvider.options);
-
-    return ListView(
-      children: _listItems(),
+    // print(menuProvider.options);
+    return FutureBuilder(
+      future: menuProvider.loadData(),
+      initialData: const [],
+      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+        return ListView(
+          children: _listItems(snapshot.data),
+        );
+      },
     );
   }
 
-  List<Widget> _listItems() {
-    return const [
-      ListTile(
-        title: Text("Hello world"),
-      ),
-      Divider(),
-      ListTile(
-        title: Text("Hello world"),
-      ),
-      Divider(),
-      ListTile(
-        title: Text("Hello world"),
-      ),
-    ];
+  List<Widget> _listItems(List<dynamic>? data) {
+    final List<Widget> options = [];
+
+    for (var option in data!) {
+      final tempWidget = ListTile(
+        leading: const Icon(Icons.ac_unit, color: Colors.blue),
+        title: Text(option['text']),
+        trailing: const Icon(Icons.keyboard_arrow_right, color: Colors.blue),
+        onTap: () {},
+      );
+
+      options
+        ..add(tempWidget)
+        ..add(const Divider());
+    }
+
+    return options;
   }
 }
