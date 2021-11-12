@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_components/src/providers/menu_provider.dart';
+import 'package:flutter_components/src/utils/icon_string_util.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class HomePage extends StatelessWidget {
 
     for (var option in data!) {
       final tempWidget = ListTile(
-        leading: const Icon(Icons.ac_unit, color: Colors.blue),
+        leading: getIcon(option['icon']),
         title: Text(option['text']),
         trailing: const Icon(Icons.keyboard_arrow_right, color: Colors.blue),
         onTap: () {},
