@@ -13,6 +13,8 @@ class CardPage extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         children: [
           _cardType1(),
+          const SizedBox(height: 30.0),
+          _cardType2(),
         ],
       ),
     );
@@ -44,6 +46,28 @@ class CardPage extends StatelessWidget {
               ),
             ],
           )
+        ],
+      ),
+    );
+  }
+
+  Widget _cardType2() {
+    return Card(
+      child: Column(
+        children: [
+          const FadeInImage(
+            placeholder: AssetImage('assets/jar-loading.gif'),
+            image: NetworkImage(
+              'https://cdn.wallpapersafari.com/57/34/uJFrUS.jpg',
+            ),
+            fadeInDuration: Duration(milliseconds: 200),
+            height: 300,
+            fit: BoxFit.cover,
+          ),
+          Container(
+            padding: const EdgeInsets.all(10.0),
+            child: const Text('Texto'),
+          ),
         ],
       ),
     );
