@@ -18,22 +18,21 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _list() {
-    // print(menuProvider.options);
     return FutureBuilder(
       future: menuProvider.loadData(),
       initialData: const [],
       builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
         return ListView(
-          children: _listItems(snapshot.data, context),
+          children: _listItems(snapshot.data!, context),
         );
       },
     );
   }
 
-  List<Widget> _listItems(List<dynamic>? data, BuildContext context) {
+  List<Widget> _listItems(List<dynamic> data, BuildContext context) {
     final List<Widget> options = [];
 
-    for (var option in data!) {
+    for (var option in data) {
       final tempWidget = ListTile(
         leading: getIcon(option['icon']),
         title: Text(option['text']),
