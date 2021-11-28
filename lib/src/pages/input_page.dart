@@ -9,6 +9,8 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   String _name = '';
+  String _email = '';
+  String _password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,10 @@ class _InputPageState extends State<InputPage> {
         ),
         children: [
           _createInput(),
+          const Divider(),
+          _createEmail(),
+          const Divider(),
+          _createPassword(),
           const Divider(),
           _createUser(),
         ],
@@ -56,6 +62,43 @@ class _InputPageState extends State<InputPage> {
   Widget _createUser() {
     return ListTile(
       title: Text('Name is: $_name'),
+      subtitle: Text('Email: $_email'),
+    );
+  }
+
+  Widget _createEmail() {
+    return TextField(
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        hintText: 'User email',
+        labelText: 'Email',
+        suffixIcon: const Icon(Icons.alternate_email),
+        icon: const Icon(Icons.email),
+      ),
+      onChanged: (value) => setState(() {
+        _email = value;
+      }),
+    );
+  }
+
+  Widget _createPassword() {
+    return TextField(
+      obscureText: true,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        hintText: 'User password',
+        labelText: 'Password',
+        suffixIcon: const Icon(Icons.lock_open),
+        icon: const Icon(Icons.lock),
+      ),
+      onChanged: (value) => setState(() {
+        _password = value;
+      }),
     );
   }
 }
