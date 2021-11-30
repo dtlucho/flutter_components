@@ -9,6 +9,7 @@ class SliderPage extends StatefulWidget {
 
 class _SliderPageState extends State<SliderPage> {
   double _value = 100.0;
+  bool _sliderBlocked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,7 @@ class _SliderPageState extends State<SliderPage> {
         child: Column(
           children: [
             _createSlider(),
+            _createCheckbox(),
             Expanded(
               child: _createImage(),
             ),
@@ -35,11 +37,33 @@ class _SliderPageState extends State<SliderPage> {
       activeColor: Colors.indigoAccent,
       label: 'Image size',
       value: _value,
-      min: 10.0,
+      min: 100.0,
       max: 400.0,
+      onChanged: _sliderBlocked
+          ? null
+          : (value) {
+              setState(() {
+                _value = value;
+              });
+            },
+    );
+  }
+
+  Widget _createCheckbox() {
+    // return Checkbox(
+    //   value: _sliderBlocked,
+    //   onChanged: (value) {
+    //     setState(() {
+    //       _sliderBlocked = value!;
+    //     });
+    //   },
+    // );
+    return CheckboxListTile(
+      title: const Text('Block slider'),
+      value: _sliderBlocked,
       onChanged: (value) {
         setState(() {
-          _value = value;
+          _sliderBlocked = value!;
         });
       },
     );
@@ -47,7 +71,7 @@ class _SliderPageState extends State<SliderPage> {
 
   Widget _createImage() {
     return Image(
-      image: NetworkImage(
+      image: const NetworkImage(
         'https://w7.pngwing.com/pngs/270/91/png-transparent-yoda-star-wars-logo-star-wars-logo-text-logo-war.png',
       ),
       width: _value,
