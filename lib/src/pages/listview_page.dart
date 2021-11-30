@@ -8,7 +8,20 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  final List<int> _numersList = [1, 2, 3, 4, 5];
+  ScrollController _scrollController = ScrollController();
+
+  final List<int> _numbersList = [];
+  int _lastItem = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _addTen();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) _addTen();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +35,10 @@ class _ListPageState extends State<ListPage> {
 
   Widget _createList() {
     return ListView.builder(
-      itemCount: _numersList.length,
+      controller: _scrollController,
+      itemCount: _numbersList.length,
       itemBuilder: (context, index) {
-        final int image = _numersList[index];
+        final int image = _numbersList[index];
 
         return FadeInImage(
           placeholder: const AssetImage('assets/jar-loading.gif'),
@@ -36,5 +50,14 @@ class _ListPageState extends State<ListPage> {
         );
       },
     );
+  }
+
+  void _addTen() {
+    for (var i = 1; i < 10; i++) {
+      _lastItem++;
+      _numbersList.add(_lastItem);
+    }
+
+    setState(() {});
   }
 }
