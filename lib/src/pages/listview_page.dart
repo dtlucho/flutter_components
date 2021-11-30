@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class ListPage extends StatefulWidget {
@@ -8,10 +10,11 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   final List<int> _numbersList = [];
   int _lastItem = 0;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -19,8 +22,14 @@ class _ListPageState extends State<ListPage> {
     _addTen();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) _addTen();
+          _scrollController.position.maxScrollExtent) _fetchData();
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
   }
 
   @override
@@ -29,7 +38,12 @@ class _ListPageState extends State<ListPage> {
       appBar: AppBar(
         title: const Text('Lists'),
       ),
-      body: _createList(),
+      body: Stack(
+        children: [
+          _createList(),
+          _createLoading(),
+        ],
+      ),
     );
   }
 
@@ -59,5 +73,47 @@ class _ListPageState extends State<ListPage> {
     }
 
     setState(() {});
+  }
+
+  Future _fetchData() async {
+    const Duration _duration = Duration(seconds: 2);
+    setState(() {
+      _isLoading = true;
+    });
+
+    return Timer(
+      _duration,
+      _fakeHTTPResponse,
+    );
+  }
+
+  void _fakeHTTPResponse() {
+    _isLoading = false;
+    _scrollController.animateTo(
+      _scrollController.position.pixels + 100,
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(milliseconds: 250),
+    );
+    _addTen();
+  }
+
+  Widget _createLoading() {
+    return _isLoading
+        ? Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  CircularProgressIndicator(),
+                ],
+              ),
+              const SizedBox(
+                height: 15.0,
+              )
+            ],
+          )
+        : Container();
   }
 }
