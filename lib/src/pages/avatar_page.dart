@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class AvatarPage extends StatelessWidget {
   const AvatarPage({Key? key}) : super(key: key);
 
+  static String pageName = 'avatar';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
